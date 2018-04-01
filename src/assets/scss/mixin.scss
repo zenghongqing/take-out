@@ -1,0 +1,78 @@
+// bourbon.io: Sass的简单轻便的mixin库
+// 导入：@import '~@/common/scss/mymixin.scss'
+// 使用：@include xx()
+// 右边竖向分割线
+@mixin right-bar($right: -8px) {
+  margin-right: 10px;
+  position: relative;
+  &:after {
+    position: absolute;
+    content: '';
+    top: 2px;
+    right: $right;
+    height: 15px;
+    // 1px
+    border-right: 1px solid #999;
+    transform: scaleY(0.5);
+  }
+}
+// 2x, 3x 背景图片
+@mixin bg-image ($name) {
+  background-image: url($name + '@2x.png');
+  @media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+    background-image: url($name + '@3x.png');
+  }
+}
+// 文本溢出省略号显示（默认一行）
+@mixin ellipsis ($line: 1) {
+  @if $line == 1 {
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  @else {
+    display: -webkit-box !important;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    // word-break: break-all; // 断词
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $line;
+  }
+}
+// 移动端 1px 边框问题
+@mixin onepx($mode: 'top', $lastHide: false) {
+  // 低级用法:
+  //        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+  // 中级用法:
+  //        box-shadow: inset 0px 1px 1px -1px #c8c7cc
+  //        box-shadow: inset 0px -1px 1px -1px @c8c7cc
+  // 高级用法
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid rgba(7, 17, 27, 0.1);
+    transform: scaleY(0.5);
+  }
+  @if $mode == 'top' {
+    &:after {
+      top: 0;
+    }
+  }
+  @if $mode == 'bottom' {
+    &:after {
+      bottom: 0;
+    }
+  }
+  @if $lastHide {
+    &:last-child {
+      &:after {
+        border-top: 0;
+      }
+    }
+  }
+}
